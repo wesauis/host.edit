@@ -6,6 +6,9 @@ import { BrowserWindow, app } from "electron";
 import isDev from "electron-is-dev";
 import prepareNext from "electron-next";
 
+global.debug = require("debug");
+global.debug.enable(process.env.LOG || "");
+
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
   await prepareNext({

@@ -12,7 +12,7 @@
   "main": "build/main/main.js",
   "scripts": {
     "clean": "rimraf dist build renderer/out renderer/.next",
-    "dev": "run-s build-main && electron .",
+    "dev": "run-s build-main && cross-env LOG=main:*,renderer:* electron .",
     "build-renderer": "node scripts/build-renderer.js",
     "build-main": "tsc -p main",
     "build": "run-p build-renderer build-main",
@@ -22,15 +22,18 @@
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
+    "debug": "^4.3.3",
     "electron-is-dev": "^1.1.0",
     "electron-next": "^3.1.5",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "supports-color": "^9.2.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.6",
     "@types/react": "^16.9.9",
     "@types/react-dom": "^16.9.9",
+    "cross-env": "^7.0.3",
     "electron": "^13",
     "electron-builder": "^22.9.1",
     "next": "latest",

@@ -2,12 +2,13 @@ import { IpcMainEvent, IpcRendererEvent } from "electron";
 
 /** Events that can be emitted by the main process */
 export type IPCs = {
-  pong: [message: string];
+  /** backchannels */
+  [key: `${keyof IPCr}#${string}`]: [data: string];
 };
 
 /** Events that can be emitted by the renderer process */
 export type IPCr = {
-  ping: [message: string];
+  "hosts-load": [`hosts-load#${string}`];
 };
 
 /** Listned by the main process and emited by the renderer process */

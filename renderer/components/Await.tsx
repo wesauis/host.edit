@@ -19,9 +19,14 @@ function Await<T>({
 
   useEffect(() => {
     promise
-      .then(setData)
-      .finally(() => setLoading(false))
-      .catch(setError);
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
   }, []);
 
   if (loading) return Loading;
