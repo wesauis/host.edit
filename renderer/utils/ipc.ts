@@ -1,19 +1,11 @@
-import type { IpcRenderer } from "electron";
-import type EventEmitter from "node:events";
+import { IPCrEvent, IPCsListner } from "../../main/ipc";
 
-type FnOn = (...args: Parameters<EventEmitter["addListener"]>) => () => void;
-export const on: FnOn = (event: string, ...args) => {
-  console.log("ipc/on", event);
-  global?.ipcRenderer?.addListener(event, ...args);
+export const on: IPCsListner = (channel, listner) => {
+  global?.ipcRenderer?.addListener(channel, listner);
 
-  return () => {
-    console.log("ipc/off", event);
-    global?.ipcRenderer?.removeListener(event, ...args);
-  };
+  return () => global?.ipcRenderer?.removeListener(channel, listner);
 };
 
-export const emit: IpcRenderer["send"] = (event, ...args) => {
-  console.debug("ipc/emit", event);
-
-  return global?.ipcRenderer?.send(event, ...args);
+export const emit: IPCrEvent = (channel, ...args) => {
+  return global?.ipcRenderer?.send(channel, ...args);
 };
