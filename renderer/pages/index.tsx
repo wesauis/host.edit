@@ -1,30 +1,41 @@
-import { useEffect } from 'react'
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import { useEffect } from "react";
+import Await from "../components/Await";
+import Layout from "../components/Layout";
+import * as ipc from "../utils/ipc";
 
-const IndexPage = () => {
+const Home = () => {
   useEffect(() => {
-    // add a listener to 'message' channel
-    global.ipcRenderer.addListener('message', (_event, args) => {
-      alert(args)
-    })
-  }, [])
+    return ipc.on("message", (_event, args) => {
+      alert(args);
+    });
+  }, []);
 
   const onSayHiClick = () => {
-    global.ipcRenderer.send('message', 'hi from next')
-  }
+    ipc.emit("message", "hi from next");
+  };
+
+  const promisse = new Promise((r) => setTimeout(r, 2000))
+    .then(() => fetch("https://api.github.com/users/wesauis"))
+    .then((res) => res.json());
 
   return (
-    <Layout title="Home | Next.js + TypeScript + Electron Example">
-      <h1>Hello Next.js 👋</h1>
+    <Layout>
+      <h1>Hello Next.js + Electron with unregister!! 👋</h1>
       <button onClick={onSayHiClick}>Say hi to electron</button>
-      <p>
-        <Link href="/about">
-          <a>About</a>
-        </Link>
-      </p>
-    </Layout>
-  )
-}
 
-export default IndexPage
+      <Await
+        promise={promisse}
+        pending={<>loading...</>}
+        error={(error) => <>error: {error?.message}</>}
+        success={(data) => (
+          <>
+            <img src={data?.avatar_url} />
+            <pre>{JSON.stringify(data, null, 2)}</pre>
+          </>
+        )}
+      />
+    </Layout>
+  );
+};
+
+export default Home;
